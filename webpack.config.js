@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HandlebarsPlugin = require("handlebars-webpack-plugin");
+// const packageName = require('packageName');
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
@@ -12,11 +14,6 @@ module.exports = {
         filename: '[name].bundle.js',
     },
 
-    // Spin up a server for quick development
-    devServer: {
-        port: 8888,
-        },
-  
     module: {
         rules: [
             // JavaScript
@@ -49,14 +46,27 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/
             },
             
-        ]
+        ],
     },
+        // Spin up a server for quick development
+    mode: "development",
+    devServer: {
+        historyApiFallback: true,
+        contentBase: path.resolve(__dirname, "./dist"),
+        open: true,
+        compress: true,
+        hot: true,
+        port: 8888,
+    },
+
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'webpack Boilerplate',
+            title: 'my webpack',
             template: path.resolve(__dirname, './src/template.html'), // шаблон
             filename: 'index.html', // название выходного файла
         }),
+
+        new webpack.HotModuleReplacementPlugin(),
 
         new CleanWebpackPlugin(),
         
